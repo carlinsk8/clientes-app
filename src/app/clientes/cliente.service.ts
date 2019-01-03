@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { formatDate, DatePipe } from '@angular/common';
 
 import { Cliente } from './cliente';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest, HttpEvent } from '@angular/common/http';
 import { map, catchError , tap} from 'rxjs/operators';
 import { of, Observable, throwError } from 'rxjs';
 import swal from 'sweetalert2';
@@ -30,7 +30,7 @@ export class ClienteService {
       map((response: any) => {
         (response.content as Cliente[]).map(cliente => {
           cliente.nombre = cliente.nombre.toUpperCase();
-          let datePipe = new DatePipe('es');
+          //let datePipe = new DatePipe('es');
           //cliente.createAt = datePipe.transform(cliente.createAt, 'EEEE dd, MMMM yyyy');
           //cliente.createAt = formatDate(cliente.createAt, 'dd-MM-yyyy', 'en-US')
           return cliente;
@@ -97,6 +97,17 @@ export class ClienteService {
         return throwError(e);
       })
     )
+  }
+  subirFoto(archivo: File, id): Observable<HttpEvent<{}>>{
+    let formData = new FormData();
+    formData.append("archivo", archivo);
+    formData.append("id", id);
+
+    const req = new HttpRequest('POST', `${this.urlEndPoint}/upload`, formData, {
+      reportProgress: true
+    });
+
+    return this.http.request(req);
   }
 
 }
