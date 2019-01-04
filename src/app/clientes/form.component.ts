@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import {Region} from './region';
 import {Cliente} from './cliente'
-import {ClienteService} from './cliente.service'
-import {Router, ActivatedRoute} from '@angular/router'
-import swal from 'sweetalert2'
+import {ClienteService} from './cliente.service';
+import {Router, ActivatedRoute} from '@angular/router';
+import swal from 'sweetalert2';
 
 @Component({
   selector: 'app-form',
@@ -11,6 +12,7 @@ import swal from 'sweetalert2'
 export class FormComponent implements OnInit {
 
   private cliente: Cliente = new Cliente();
+  regiones: Region[];
   private titulo:string = "Crear Cliente";
   private errores: string[];
 
@@ -28,7 +30,8 @@ export class FormComponent implements OnInit {
       if(id){
         this.clienteService.getCliente(id).subscribe( (cliente) => this.cliente = cliente)
       }
-    })
+    });
+    this.clienteService.getRegiones().subscribe(regiones => this.regiones = regiones);
   }
 
   create(): void {
