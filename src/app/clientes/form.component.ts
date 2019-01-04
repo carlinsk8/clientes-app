@@ -21,7 +21,7 @@ export class FormComponent implements OnInit {
   private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.cargarCliente()
+    this.cargarCliente();
   }
 
   cargarCliente(): void{
